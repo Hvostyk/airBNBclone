@@ -1,0 +1,17 @@
+.navbar-block{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-block: 24px; //py-6 == p-block number*4
+    
+    border-bottom: 1px solid;
+    background-color: white;
+    z-index: 10px;
+    
+    .navbar-container{
+        max-width: 1500px; //max-w-[1500px] если в квадратных, то без калькулейшн
+        padding-inline: 24px;
+
+    }
+}
