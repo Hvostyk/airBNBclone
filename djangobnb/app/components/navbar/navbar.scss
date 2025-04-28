@@ -12,6 +12,45 @@
     .navbar-container{
         max-width: 1500px; //max-w-[1500px] если в квадратных, то без калькулейшн
         padding-inline: 24px;
+        .navbar-ul{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
+        .navbar-search{
+            display: flex;
+
+            /*SearchFilters.tsx*/
+            .search-block{
+                display: flex;
+                height: 64px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                border: 1px solid;
+                border-radius: calc(infinity*1px); //rounded full
+                .search-param{
+                    display: flex;
+                    flex-direction: column;
+                    height: 64px;
+                    padding-inline: 32px;
+                    justify-content: center;
+                    
+                    border-radius: calc(infinity*1px);
+                    :hover{
+                        background-color: rgb(200, 200, 200);
+                    }
+                    :first-child{
+                        width: 250px;
+                    }
+                    :last-child{
+                        width: 250px;
+                    }
+                }
+            }
+            /*SearchFilters.tsx*/
+
+        }
     }
 }

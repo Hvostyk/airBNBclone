@@ -14,9 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-      >
-        <Navbar/>
+      <body>
+        <div className="pb-[150px]">
+          <Navbar/>
+        </div>
         {children}
       </body>
     </html>
