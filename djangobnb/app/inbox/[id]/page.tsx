@@ -1,0 +1,11 @@
+import ConversationDetail from "@/app/components/inbox/ConversationDetail"
+
+function ConversationPage() {
+    return (
+        <main className="w-full mx-auto px-6 pb-6">
+            <ConversationDetail/>
+        </main>
+    )
+}
+
+export default ConversationPage

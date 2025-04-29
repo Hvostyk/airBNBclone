@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "./components/navbar/navbar";
+import LoginModal from "./components/modals/LoginModal";
+import SignupModal from "./components/modals/SignupModal";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,13 +14,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const content=(
+    <p>yo</p>
+  )
+
   return (
     <html lang="en">
       <body>
         <div className="pb-[150px]">
           <Navbar/>
         </div>
+        <div>
         {children}
+        </div>
+
+        <LoginModal/>
+        <SignupModal/>
       </body>
     </html>
   );

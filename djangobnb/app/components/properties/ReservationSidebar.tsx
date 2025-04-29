@@ -12,7 +12,7 @@ function ReservationSidebar() {
             </select>
         </div>
 
-        <div className="w-full h-[20%] mb-6 py-6 text-center text-white bg-rose-500 hover:bg-rose-600 rounded-xl">
+        <div className="w-full h-[20%] flex items-center justify-center mb-6 py-6 text-center text-white bg-rose-500 hover:bg-rose-600 rounded-xl">
             Book
         </div>
 
