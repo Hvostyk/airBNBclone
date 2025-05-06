@@ -4,14 +4,21 @@ import MenuLink from "./MenuLink"
 
 import { useLoginModal } from "@/app/hooks/useLoginModal"
 import { useSignupModal } from "@/app/hooks/useSignupModal"
-import SignupModal from "../modals/SignupModal"
-function UserNav() {
+import LogoutButton from "../LogoutButton"
+import { StdioNull } from "child_process"
+// import SignupModal from "../modals/SignupModal"
+
+interface IUserNavProps {
+  userId?: string | null
+}
+
+const UserNav: React.FC<IUserNavProps>= ({userId}) => {
   const [isActive,setisActive]=useState(false)
   const loginModal=useLoginModal()
   const signupModal=useSignupModal()
-
+  
   return (
-    <div className="p-2 relative inline-block border rounded-full cursor-pointer">
+    <div className="p-2 relative flex border rounded-full items-center cursor-pointer">
 
         <button 
         onClick={()=>{setisActive(!isActive)}}
@@ -27,21 +34,27 @@ function UserNav() {
 
         {isActive && (
           <div className="w-[220px] absolute top-[60px] right-0 bg-white border rounded-xl shadow-md flex-col cursor-pointer">
-            <MenuLink
-              label="Log in"
-              onClick={()=>{
-                setisActive(false)
-                loginModal.open()
-              }}
-            />
+            {userId ? (
+              <LogoutButton/>
+            ):(<>
+                <MenuLink
+                  label="Log in"
+                  onClick={()=>{
+                    setisActive(false)
+                    loginModal.open()
+                  }}
+                />
 
-            <MenuLink
-              label="Sign up"
-              onClick={()=>{
-                setisActive(false)
-                signupModal.open()
-              }}
-            />
+                <MenuLink
+                  label="Sign up"
+                  onClick={()=>{
+                    setisActive(false)
+                    signupModal.open()
+                  }}
+                />
+              </>
+          )}
+
 
           </div>
         )}
