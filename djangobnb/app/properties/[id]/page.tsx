@@ -4,7 +4,6 @@ import ReservationSidebar from "@/app/components/properties/ReservationSidebar";
 
 import apiService from "@/app/services/apiService";
 import { getUserId } from "@/app/lib/action";
-
 const PropertyDetailPage = async ({params}: { params: {id: string }}) => {
     const property = await apiService.get(`/api/properties/${params.id}`);
     const userId = await getUserId();
@@ -58,6 +57,7 @@ const PropertyDetailPage = async ({params}: { params: {id: string }}) => {
 
                 <ReservationSidebar 
                     property={property}
+                    userId={userId}
                 />
             </div>
         </main>

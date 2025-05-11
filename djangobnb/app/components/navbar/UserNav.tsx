@@ -5,7 +5,7 @@ import MenuLink from "./MenuLink"
 import { useLoginModal } from "@/app/hooks/useLoginModal"
 import { useSignupModal } from "@/app/hooks/useSignupModal"
 import LogoutButton from "../LogoutButton"
-import { StdioNull } from "child_process"
+import { useRouter } from "next/navigation"
 // import SignupModal from "../modals/SignupModal"
 
 interface IUserNavProps {
@@ -16,6 +16,8 @@ const UserNav: React.FC<IUserNavProps>= ({userId}) => {
   const [isActive,setisActive]=useState(false)
   const loginModal=useLoginModal()
   const signupModal=useSignupModal()
+
+  const router = useRouter()
   
   return (
     <div className="p-2 relative flex border rounded-full items-center cursor-pointer">
@@ -35,7 +37,25 @@ const UserNav: React.FC<IUserNavProps>= ({userId}) => {
         {isActive && (
           <div className="w-[220px] absolute top-[60px] right-0 bg-white border rounded-xl shadow-md flex-col cursor-pointer">
             {userId ? (
+              <>
+              <MenuLink
+                label="My properties"
+                onClick={() => {
+                  setisActive(false)
+                  router.push(`/myproperties`)
+                }}
+              />
+
+              <MenuLink
+                label="My reservations"
+                onClick={() => {
+                  setisActive(false)
+                  router.push(`/myreservations`)
+                }}
+              />
+
               <LogoutButton/>
+              </>
             ):(<>
                 <MenuLink
                   label="Log in"
