@@ -16,37 +16,39 @@ def properties_list(request):
     
     if token_header:
         try:
-            # Извлекаем токен из заголовка
+            
             token = token_header.split('Bearer ')[1]
             
-            # Декодируем токен
-            access_token = AccessToken(token)
-            user_id = access_token.payload.get('user_id')  # Используйте правильный ключ из payload
             
-            # Получаем пользователя
+            access_token = AccessToken(token)
+            user_id = access_token.payload.get('user_id')  
+            
+            
             user = User.objects.get(pk=user_id)
         except (IndexError, KeyError, User.DoesNotExist, Exception) as e:
             print(f"Auth error: {str(e)}")
             user = None
 
-    # Фильтрация по landlord_id
+    is_favorites = request.GET.get('is_favorites', '')
     landlord_id = request.GET.get('landlord_id', '')
     properties = Property.objects.all()
     
     if landlord_id:
         properties = properties.filter(landlord_id=landlord_id)
 
-    # Проверка избранного
+    if is_favorites:
+        properties = properties.filter(favorited__in = [user])
+    
     favorites = []
     if user:
-        # Оптимизированный запрос для проверки избранного
+        
         favorites = list(Property.objects.filter(favorited=user).values_list('id', flat=True))
 
     serializer = PropertiesListSerializer(properties, many=True)
     
     return JsonResponse({
         'data': serializer.data,
-        'favorites': favorites  # Добавьте favorites в ответ, если нужно
+        'favorites': favorites  
     })
     
     
@@ -120,4 +122,4 @@ def toggle_favorite(request,pk):
         return JsonResponse({'is_favorite':False})
     else:
         property.favorited.add(request.user)
-        return JsonResponse({'is_favorite':True})
+        return JsonResponse({'is_favorite':True})  
