@@ -7,7 +7,7 @@ import 'react-date-range/dist/theme/default.css'
 
 interface IDatePickerProps{
     value: Range,
-    onChange: (value: RangeKeyDict) => void,
+    onChange?: (value: RangeKeyDict) => void,
     bookedDates?: Date[],
 }
 

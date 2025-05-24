@@ -18,7 +18,6 @@ export type MessageType = {
 
 const ConversationPage = async({params}: {params: {id: string}})=> {
     const token = await getAccessToken();
-    console.log("ACCESTOKEN",token)
     const userId = await getUserId();
 
     if (!userId || !token){

@@ -27,7 +27,6 @@ const SignupModal = () => {
       const response = await apiService.postWithoutToken('/api/auth/register/', JSON.stringify(formData))
       if (response.access) {
         handleLogin(response.user.pk, response.access, response.refresh)
-        console.log(response.user.pk, response.access, response.refresh)
         SignupModal.close();
         router.push('/')
       } else{

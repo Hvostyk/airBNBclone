@@ -5,7 +5,6 @@ import { getAccessToken } from "../lib/action"
 
 const apiService = {
     get: async function (url: string): Promise<any> {
-        console.log('get', url);
         const token = await getAccessToken();
         return new Promise((resolve, reject) => {
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
@@ -16,7 +15,6 @@ const apiService = {
             })
             .then(response => response.json())
             .then((json) => {
-                console.log('Response:', json);
                 resolve(json);
             })
             .catch(error => {
@@ -26,7 +24,6 @@ const apiService = {
     },
 
     post: async function(url: string, data: any): Promise<any> {
-        console.log('post', url, data);
 
         const token = await getAccessToken();
 
@@ -40,7 +37,6 @@ const apiService = {
             })
                 .then(response => response.json())
                 .then((json) => {
-                    console.log('Response:', json);
 
                     resolve(json);
                 })
@@ -51,7 +47,6 @@ const apiService = {
     },
 
     postWithoutToken: async function(url: string, data: any): Promise<any> {
-        console.log('post', url, data);
 
         return new Promise((resolve, reject) => {
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
@@ -64,7 +59,6 @@ const apiService = {
             })
                 .then(response => response.json())
                 .then((json) => {
-                    console.log('Response:', json);
 
                     resolve(json);
                 })

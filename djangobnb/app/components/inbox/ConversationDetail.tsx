@@ -18,7 +18,7 @@ const ConversationDetail: React.FC<IConversationDetailProps> = ({
   token,
   messages
 })=> {
-  const messagesDiv = useRef(null)
+  const messagesDiv = useRef<null|any>(null)
   const [newMessage, setNewMessage] = useState('')
   const myUser = conversation.users?.find((user)=> user.id == userId)
   const otherUser = conversation.users?.find((user) => user.id != userId)
@@ -48,11 +48,11 @@ const ConversationDetail: React.FC<IConversationDetailProps> = ({
     },50);
   }
 
-  const scrollToBottom = () =>{
-    if (messagesDiv.current){
-        messagesDiv.current.scrollTop = messagesDiv.current.scrollHeight;
+    const scrollToBottom = () => {
+        if (messagesDiv.current) {
+            messagesDiv.current.scrollTop = messagesDiv.current.scrollHeight;
+        }
     }
-  }
 
   useEffect(() =>{
     console.log("Connection state changed", readyState)

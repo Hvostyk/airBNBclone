@@ -10,12 +10,14 @@ export type SelectCountryValue = {
 interface ISelectCountryProps {
     value?: SelectCountryValue;
     onChange: (value: SelectCountryValue) => void;
+    className?: string,
 
 }
 
 const SelectCountry: React.FC<ISelectCountryProps>= ({
     value,
-    onChange
+    onChange,
+    className,
 }
 ) => {
     const {getAll} =useCountries()
@@ -23,6 +25,7 @@ const SelectCountry: React.FC<ISelectCountryProps>= ({
     return (
         <>
             <Select
+                className={className}
                 isClearable
                 placeholder="Anywhere"
                 options={getAll()}

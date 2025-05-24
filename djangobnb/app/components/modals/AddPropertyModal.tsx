@@ -49,7 +49,6 @@ const AddPropertyModal = () => {
     //
 
     const submitForm = async () => {
-        console.log('submitFrom')
 
         if(
             dataTitle &&
@@ -72,14 +71,12 @@ const AddPropertyModal = () => {
             const response = await apiService.post('/api/properties/create/', formData)
             
             if (response.success){
-                console.log('Succes XD')
 
                 router.push('/')
 
                 addPropertyModal.close();
 
             } else {
-                console.log('Error');
                 const tmpErrors: string[] = Object.values(response).map((error: any) =>{
                     return error
                 })
