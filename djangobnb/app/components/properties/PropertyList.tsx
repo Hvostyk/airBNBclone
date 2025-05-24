@@ -1,5 +1,5 @@
 'use client'
-
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react"
 import PropertyListItem from "./PropertyListItem"
 import { error } from "console";
@@ -23,6 +23,7 @@ const PropertyList: React.FC<IPropertyListProps> = ({
   landlord_id,
   favorites,
 }) => {
+  const params = useSearchParams()
   const [properties, setProperties]=useState<PropertyType[]>([])
   const markFavorite = (id: string, is_favorite:boolean) => {
     const tmpProperties = properties.map((property: PropertyType) => {
@@ -61,7 +62,7 @@ const PropertyList: React.FC<IPropertyListProps> = ({
 
   useEffect(()=>{
     getProperties();
-  },[])
+  },[params])
 
   return (
     <>
