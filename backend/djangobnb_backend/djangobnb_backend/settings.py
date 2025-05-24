@@ -2,6 +2,9 @@ import os
 
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,8 +25,10 @@ AUTH_USER_MODEL = 'useraccount.User'  #обращается к нашему мо
 
 SITE_ID=1
 
-WEBSITE_URL='http://localhost:8000'
-
+if DEBUG:
+    WEBSITE_URL='http://localhost:8000'
+else:
+    WEBSITE_URL = 'http://'
 CHANNEL_LAYERS = {
     'default' : {
         'BACKEND': 'channels.layers.InMemoryChannelLayer'
@@ -60,6 +65,22 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://127.0.0.1:3000',
+    # 'http://',
+    # 'http://:1337',
+]
+
+CORS_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:3000',
+    # 'http://',
+    # 'http://:1337',
+]
+
+CORS_ORIGINS_WHITELIST = [
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:3000',
+    # 'http://',
+    # 'http://:1337',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
