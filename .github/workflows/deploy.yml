@@ -23,6 +23,8 @@ jobs:
         pip install -r backend/djangobnb_backend/requirements.txt
 
     - name: Run migrations and collect static
+      env:
+        DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
       run: |
         python backend/djangobnb_backend/manage.py check --deploy
         python backend/djangobnb_backend/manage.py migrate
