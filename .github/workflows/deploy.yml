@@ -24,6 +24,8 @@ jobs:
 
     - name: Run migrations and collect static
       env:
+        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
         DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
       run: |
         python backend/djangobnb_backend/manage.py check --deploy
