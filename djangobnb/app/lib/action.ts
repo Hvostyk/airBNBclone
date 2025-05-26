@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 
 export async function handleRefresh() {
-
+    const cookiesData = await cookies()
     const refreshToken = await getRefreshToken();
 
     const token = await fetch('http://localhost:8000/api/auth/token/refresh/', {
@@ -20,7 +20,7 @@ export async function handleRefresh() {
         .then((json) => {
 
             if (json.access) {
-                cookies().set('session_access_token', json.access, {
+                cookiesData.set('session_access_token', json.access, {
                     httpOnly: true,
                     secure: false,
                     maxAge: 60 * 60, // 60 minutes

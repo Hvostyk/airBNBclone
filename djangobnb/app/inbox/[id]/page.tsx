@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import apiService from "@/app/services/apiService";
 import ConversationDetail from "@/app/components/inbox/ConversationDetail";
 import { getUserId } from "@/app/lib/action";
@@ -22,7 +21,14 @@ interface ConversationPageProps {
   };
 }
 
-const ConversationPage = async ({ params }: ConversationPageProps) => {
+interface IConversationProps{
+  params: Promise<{
+    id: string;
+  }>;
+};  
+
+async function ConversationPage(props : IConversationProps) {
+  const {id} = await props.params
   const token = await getAccessToken();
   const userId = await getUserId();
 
@@ -34,7 +40,7 @@ const ConversationPage = async ({ params }: ConversationPageProps) => {
     );
   }
 
-  const conversation = await apiService.get(`/api/chat/${params.id}/`);
+  const conversation = await apiService.get(`/api/chat/${id}/`);
 
   return (
     <main className="w-full mx-auto px-6 pb-6">

@@ -1,6 +1,6 @@
 'use client'
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import PropertyListItem from "./PropertyListItem"
 import { error } from "console";
 
@@ -19,7 +19,7 @@ interface IPropertyListProps {
   favorites?: boolean | null;
 }
 
-const PropertyList: React.FC<IPropertyListProps> = ({
+const PropertyListContent: React.FC<IPropertyListProps> = ({
   landlord_id,
   favorites,
 }) => {
@@ -62,7 +62,7 @@ const PropertyList: React.FC<IPropertyListProps> = ({
 
   useEffect(()=>{
     getProperties();
-  },[params])
+  },[params.has("added")])
 
   return (
     <>
@@ -75,6 +75,16 @@ const PropertyList: React.FC<IPropertyListProps> = ({
         />
       )
     })}
+    </>
+  )
+}
+
+const PropertyList: React.FC<IPropertyListProps> = (props) => {
+  return (
+    <>
+    <Suspense fallback={<div>Loading properties...</div>}>
+      <PropertyListContent {...props} />
+    </Suspense>
     </>
   )
 }
