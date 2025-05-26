@@ -27,9 +27,9 @@ jobs:
         DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
       run: |
-        python ../../backend/djangobnb_backend/manage.py check --deploy
-        python ../../backend/djangobnb_backend/manage.py migrate
-        python ../../backend/djangobnb_backend/manage.py collectstatic --noinput
+        python backend/manage.py check --deploy
+        python backend/manage.py migrate
+        python backend/manage.py collectstatic --noinput
 
     - name: Deploy to Server via SSH
       uses: appleboy/ssh-action@v0.1.10
@@ -42,8 +42,8 @@ jobs:
           cd /path/to/project
           git pull origin main
           source venv/bin/activate
-          pip install -r backend/djangobnb_backend/requirements.txt
-          python ../../backend/djangobnb_backend/manage.py migrate
-          python ../../backend/djangobnb_backend/manage.py collectstatic --noinput
+          pip install -r requirements.txt
+          python backend/manage.py migrate
+          python backend/manage.py collectstatic --noinput
           sudo systemctl restart gunicorn
           sudo systemctl restart nginx
