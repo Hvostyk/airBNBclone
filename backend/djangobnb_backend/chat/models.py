@@ -8,6 +8,15 @@ class Conversation(models.Model):
     users = models.ManyToManyField(User, related_name='conversations')
     created_at = models.DateTimeField(auto_now_add = True)
     modified_at = models.DateTimeField(auto_now = True)
+    
+    class Meta:
+        verbose_name = "Conversation"
+    
+    def __str__(self):
+        users = list(self.users.all()[:2])
+        if not users:
+            return ""
+        return f'conversation with {users[0].name + (" & " + users[1].name if len(users) > 1 else "")}'
 
     
 class ConversationMessage(models.Model):

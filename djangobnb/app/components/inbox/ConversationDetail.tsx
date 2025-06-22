@@ -54,9 +54,9 @@ const ConversationDetail: React.FC<IConversationDetailProps> = ({
         }
     }
 
-  useEffect(() =>{
-    console.log("Connection state changed", readyState)
-  }, [readyState])
+  // useEffect(() =>{
+  //   console.log("Connection state changed", readyState)
+  // }, [readyState])
 
   useEffect(()=>{
     if(lastJsonMessage && typeof lastJsonMessage === 'object' && 'name' in lastJsonMessage && 'body' in lastJsonMessage){

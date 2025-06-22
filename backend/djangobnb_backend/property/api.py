@@ -1,10 +1,16 @@
 from django.http import JsonResponse
+from rest_framework.response import Response
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework_simplejwt.tokens import AccessToken
+from django.shortcuts import get_object_or_404
+
+from rest_framework.generics import RetrieveAPIView,ListCreateAPIView, CreateAPIView, GenericAPIView
+from rest_framework.parsers import MultiPartParser
+
 from .forms import PropertyForm
 from .models import Property, Reservation
-from .serializers import PropertiesListSerializer , PropertiesDetailSerializer, ReservationsListSerializer
+from .serializers import PropertiesListSerializer , PropertiesDetailSerializer, ReservationsListSerializer, BookCreateSerializer
 from useraccount.models import User
 
 @api_view(['GET'])
@@ -51,27 +57,6 @@ def properties_list(request):
         'favorites': favorites  
     })
     
-    
-@api_view(['GET'])
-@authentication_classes([])
-@permission_classes([])
-def properties_detail(request, pk):
-    property = Property.objects.get(pk=pk)
-    
-    serializer = PropertiesDetailSerializer(property, many= False)
-    
-    return JsonResponse(serializer.data)
-    
-    
-@api_view(['GET'])
-@authentication_classes([])
-@permission_classes([])
-def property_reservations(request, pk):
-    property = Property.objects.get(pk=pk)
-    reservations = property.reservations.all()
-    serializer = ReservationsListSerializer(reservations, many = True)
-    return JsonResponse(serializer.data, safe = False)
-        
 @api_view(['POST', 'FILES'])
 def create_property(request):
     form = PropertyForm(request.POST, request.FILES)
@@ -86,40 +71,46 @@ def create_property(request):
         print('error', form.errors, form.non_field_errors)
         return JsonResponse({'errors': form.errors.as_json()}, status = 400)
     
-@api_view(['POST'])
-def book_property(request,pk):
-    try:
-        start_date = request.POST.get('start_date', '')
-        end_date = request.POST.get('end_date', '')
-        number_of_nights = request.POST.get('number_of_nights', '')
-        total_price = request.POST.get('total_price', '')
-        guests = request.POST.get('guests', '')
+    
+class PropertyDetailView(RetrieveAPIView):
+    authentication_classes = []
+    permission_classes = []
+    queryset = Property.objects.all()
+    serializer_class = PropertiesDetailSerializer
+    
+
+class PropertyReservationsView(ListCreateAPIView):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = ReservationsListSerializer 
+    
+    def get_queryset(self):
+        property = get_object_or_404(Property, pk = self.kwargs['pk'])
+        return property.reservations.all()
         
-        property = Property.objects.get(pk = pk)
+    
+class BookPropertyCreateView(CreateAPIView):
+    serializer_class = BookCreateSerializer
+    
+    def perform_create(self, serializer):
+        property_id = self.kwargs.get('pk')
+        property = get_object_or_404(Property, pk=property_id)
         
-        Reservation.objects.create(
+        serializer.save(
             property=property,
-            start_date = start_date,
-            end_date = end_date,
-            number_of_nights = number_of_nights,
-            total_price = total_price,
-            guests = guests,
-            created_by = request.user,
         )
-        return JsonResponse({'success': True})
-    except Exception as e:
-        print('Error',e)
-        
-        return JsonResponse({'success':False})
     
-@api_view(['POST'])
-def toggle_favorite(request,pk):
-    property = Property.objects.get(pk = pk)
+
+class ToggleFavoriteView(GenericAPIView):
+    queryset = Property.objects.all()
     
-    if request.user in property.favorited.all():
-        property.favorited.remove(request.user)
-        
-        return JsonResponse({'is_favorite':False})
-    else:
-        property.favorited.add(request.user)
-        return JsonResponse({'is_favorite':True})  
+    def post(self, request, *args, **kwargs):
+        property = self.get_object()
+        user = request.user
+        is_favorite = property.favorited.filter(id = user.id).exists()
+        if is_favorite:
+            property.favorited.remove(user)
+        else:
+            property.favorited.add(user)
+    
+        return Response({'is_favorite': not is_favorite})

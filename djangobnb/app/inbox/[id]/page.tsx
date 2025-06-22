@@ -14,7 +14,6 @@ export type MessageType = {
   created_by: UserType;
 };
 
-// Explicitly type the props according to Next.js App Router's expectations
 interface ConversationPageProps {
   params: {
     id: string;
